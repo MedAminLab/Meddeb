@@ -1,9 +1,11 @@
 
-const CACHE_NAME = 'meddeb-v2';
+const CACHE_NAME = 'meddeb-v3';
 const urlsToCache = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './index.tsx',
+  './App.tsx'
 ];
 
 self.addEventListener('install', event => {
@@ -30,11 +32,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {
-      return response || fetch(event.request).catch(() => {
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-      });
+      return response || fetch(event.request);
     })
   );
 });
