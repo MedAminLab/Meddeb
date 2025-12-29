@@ -79,7 +79,7 @@ const PrayerTimesView: React.FC<PrayerTimesViewProps> = ({ isDark, onLocationCha
       }
 
       if (!found) {
-        found = { name: 'Fajr', time: times.Fajr }; // Prochain Fajr demain
+        found = { name: 'Fajr', time: times.Fajr };
       }
 
       setNextPrayer(found);
@@ -134,31 +134,32 @@ const PrayerTimesView: React.FC<PrayerTimesViewProps> = ({ isDark, onLocationCha
   };
 
   const formatDate = () => {
-    const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long' };
     return new Date().toLocaleDateString('fr-FR', options).toLowerCase();
   };
 
   if (showSearch) {
     return (
       <div className="space-y-6 animate-in fade-in zoom-in duration-300">
-        <div className="flex justify-between items-center px-1">
-          <h2 className="text-xl font-bold tracking-tight">Ajouter un lieu</h2>
-          <button onClick={() => setShowSearch(false)} className="text-brand font-bold text-sm">Annuler</button>
+        <div className="flex justify-between items-center px-1 pt-4">
+          <h2 className="text-xl font-black tracking-tight">Ajouter un lieu</h2>
+          <button onClick={() => setShowSearch(false)} className="text-brand font-black text-xs uppercase tracking-widest px-3 py-1 bg-brand/10 rounded-full">Fermer</button>
         </div>
         <form onSubmit={handleSearch} className="relative">
           <input 
             type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Rechercher une ville..."
-            className={`w-full p-4 pl-12 rounded-2xl border transition-all ${isDark ? 'bg-slate-800 border-white/5 text-white' : 'bg-white border-slate-200 text-slate-900'} focus:ring-2 focus:ring-brand outline-none shadow-sm`}
+            className={`w-full p-5 pl-14 rounded-3xl border transition-all ${isDark ? 'bg-white/5 border-white/5 text-white' : 'bg-white border-slate-100 text-slate-900'} focus:ring-2 focus:ring-brand outline-none shadow-sm font-bold`}
           />
-          <div className="absolute left-4 top-4 text-slate-400">
+          <div className="absolute left-5 top-5 text-slate-400">
              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
           </div>
         </form>
-        <div className="space-y-2">
+        <div className="space-y-3">
           {searchResults.map(res => (
-            <button key={res.id} onClick={() => addLocation(res)} className={`w-full p-5 rounded-2xl text-left border transition-all ${isDark ? 'bg-white/5 border-white/5 hover:bg-white/10' : 'bg-white border-slate-100 hover:border-brand/30 hover:shadow-md shadow-sm'}`}>
-              <p className="font-bold">{res.name}</p>
+            <button key={res.id} onClick={() => addLocation(res)} className={`w-full p-6 rounded-3xl text-left border transition-all ${isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white border-slate-100 hover:border-brand/30 hover:shadow-md shadow-sm'}`}>
+              <p className="font-black text-lg">{res.name}</p>
+              <p className="text-[10px] opacity-40 font-bold uppercase tracking-widest">Cliquer pour sélectionner</p>
             </button>
           ))}
         </div>
@@ -167,49 +168,73 @@ const PrayerTimesView: React.FC<PrayerTimesViewProps> = ({ isDark, onLocationCha
   }
 
   return (
-    <div className="space-y-6">
-      {/* Hero Card like the image */}
-      <div className="relative p-8 rounded-[3rem] bg-[#10B981] text-white shadow-xl flex flex-col items-center text-center overflow-hidden min-h-[340px] justify-center gap-6">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-[11px] font-black uppercase tracking-[0.2em] opacity-80">Prochaine prière</h2>
-          <h3 className="text-5xl font-black tracking-tight">{nextPrayer ? PRAYER_NAMES[nextPrayer.name] : '...'}</h3>
+    <div className="flex flex-col space-y-4">
+      {/* Hero Immersif */}
+      <div className="relative p-8 rounded-[2.5rem] bg-brand text-white shadow-2xl flex flex-col items-center text-center overflow-hidden min-h-[300px] justify-center gap-5">
+        {/* Cercles de décoration en arrière-plan */}
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-black/10 rounded-full blur-3xl"></div>
+
+        <div className="flex flex-col gap-1 relative z-10">
+          <h2 className="text-[11px] font-black uppercase tracking-[0.25em] opacity-80">Prochaine prière</h2>
+          <h3 className="text-6xl font-black tracking-tighter">{nextPrayer ? PRAYER_NAMES[nextPrayer.name] : '...'}</h3>
         </div>
 
-        <div className="px-6 py-2.5 bg-white/20 rounded-2xl backdrop-blur-md">
-          <span className="text-3xl font-black tracking-tight tabular-nums">{countdown}</span>
+        <div className="px-8 py-3 bg-white/20 rounded-3xl backdrop-blur-xl border border-white/20 relative z-10 shadow-inner">
+          <span className="text-4xl font-black tracking-tight tabular-nums">{countdown}</span>
         </div>
 
-        {lastRead && (
-          <button 
-            onClick={onGoToQuran}
-            className="flex items-center gap-2.5 px-6 py-3.5 bg-white/10 border border-white/20 rounded-full backdrop-blur-sm hover:bg-white/20 transition-all active:scale-95"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
-            <span className="text-sm font-bold tracking-tight">Reprendre {lastRead.surahName} (Verset {lastRead.ayahNumber})</span>
-          </button>
-        )}
-
-        <div className="text-[13px] font-medium opacity-80 mt-2">
+        <div className="text-[14px] font-black opacity-80 mt-1 uppercase tracking-widest relative z-10">
           {formatDate()}
         </div>
       </div>
 
+      {lastRead && (
+        <button 
+          onClick={onGoToQuran}
+          className={`flex items-center justify-between gap-4 p-5 px-7 rounded-[2rem] border transition-all active:scale-95 ${isDark ? 'bg-white/5 border-white/5' : 'bg-white border-slate-100 shadow-sm'}`}
+        >
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-brand/10 text-brand rounded-xl">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+            </div>
+            <div className="text-left">
+              <p className="text-[10px] font-black uppercase tracking-widest opacity-40 leading-none mb-1">Dernière lecture</p>
+              <p className="text-sm font-black tracking-tight">{lastRead.surahName} • Verset {lastRead.ayahNumber}</p>
+            </div>
+          </div>
+          <svg className="h-5 w-5 text-brand" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
+        </button>
+      )}
+
       {loading ? (
         <div className="flex flex-col items-center py-12 gap-5 text-brand">
           <div className="animate-spin rounded-full h-10 w-10 border-4 border-brand/20 border-t-brand"></div>
-          <p className="font-extrabold text-xs tracking-[0.2em] uppercase opacity-60">Synchronisation...</p>
+          <p className="font-black text-[10px] tracking-[0.3em] uppercase opacity-60">Synchronisation</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-3">
+        <div className="grid grid-cols-1 gap-2.5">
           {times && Object.entries(times).filter(([key]) => PRAYER_NAMES[key]).map(([key, value]) => (
-            <div key={key} className={`flex justify-between items-center p-6 px-8 rounded-[2.5rem] transition-all duration-300 ${isDark ? 'bg-white/5 hover:bg-white/10' : 'bg-white shadow-[0_4px_15px_-5px_rgba(0,0,0,0.05)]'}`}>
+            <div key={key} className={`flex justify-between items-center p-6 px-8 rounded-[2rem] transition-all duration-300 group ${isDark ? 'bg-white/5 hover:bg-white/10' : 'bg-white border border-slate-100/50 hover:shadow-md'}`}>
               <div className="flex flex-col gap-0.5">
-                <span className={`text-[10px] uppercase font-black tracking-[0.2em] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{key === 'Sunrise' ? 'Nature' : 'Temps'}</span>
-                <span className="font-extrabold text-lg tracking-tight">{PRAYER_NAMES[key]}</span>
+                <span className={`text-[10px] uppercase font-black tracking-[0.25em] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+                  {key === 'Sunrise' ? 'Chourouk' : 'Prière'}
+                </span>
+                <span className="font-black text-xl tracking-tighter">{PRAYER_NAMES[key]}</span>
               </div>
-              <span className="text-3xl font-black text-brand tabular-nums tracking-tighter">{value}</span>
+              <span className={`text-4xl font-black tabular-nums tracking-tighter ${nextPrayer?.name === key ? 'text-brand scale-110' : 'opacity-80'}`}>
+                {value}
+              </span>
             </div>
           ))}
+          
+          <button 
+            onClick={() => setShowSearch(true)}
+            className={`w-full p-4 mt-2 rounded-[1.5rem] border-2 border-dashed flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all opacity-40 hover:opacity-100 ${isDark ? 'border-white/10 text-white' : 'border-slate-200 text-slate-500 hover:border-brand hover:text-brand'}`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            Changer de ville
+          </button>
         </div>
       )}
     </div>

@@ -1,28 +1,34 @@
 
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
+import { createRoot } from 'react-dom/client';
+import App from './App';
 
-// Enregistrement du Service Worker avec chemin relatif pour GitHub Pages
-if ('serviceWorker' in navigator) {
+const container = document.getElementById('root');
+if (container) {
+  const root = createRoot(container);
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+  
+  const loader = document.getElementById('fallback-loader');
+  if (loader) {
+    setTimeout(() => {
+      loader.style.opacity = '0';
+      setTimeout(() => loader.remove(), 500);
+    }, 400);
+  }
+}
+
+// Enregistrement sécurisé du Service Worker
+if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
   window.addEventListener('load', () => {
-    // Utilisation de ./sw.js au lieu de /sw.js
-    navigator.serviceWorker.register('./sw.js').then(reg => {
-      console.log('SW enregistré avec succès dans le scope:', reg.scope);
-    }).catch(err => {
-      console.log('Échec de l\'enregistrement du SW: ', err);
-    });
+    // On n'enregistre le SW que si l'origine correspond pour éviter les erreurs de preview
+    if (!window.location.host.includes('usercontent.goog')) {
+      navigator.serviceWorker.register('./sw.js').catch(err => {
+        console.warn('ServiceWorker non enregistré (environnement de dev)');
+      });
+    }
   });
 }
-
-const rootElement = document.getElementById('root');
-if (!rootElement) {
-  throw new Error("Impossible de trouver l'élément root");
-}
-
-const root = ReactDOM.createRoot(rootElement);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);

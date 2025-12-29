@@ -1,43 +1,39 @@
 
 <!DOCTYPE html>
-<html lang="fr" class="transition-colors duration-300">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#0b101b" />
+    <meta name="theme-color" content="#10B981" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Meddeb" />
-    <link rel="apple-touch-icon" href="https://img.icons8.com/ios-filled/512/10B981/crescent-moon.png" />
-    <link rel="icon" type="image/png" href="https://img.icons8.com/ios-filled/192/10B981/crescent-moon.png" />
+    
+    <!-- Icônes PWA -->
+    <link rel="apple-touch-icon" href="https://img.icons8.com/fluency-systems-filled/512/10B981/crescent-moon.png" />
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency-systems-filled/192/10B981/crescent-moon.png" />
     <link rel="manifest" href="./manifest.json" />
     <title>Meddeb</title>
     
-    <!-- Scripts de base -->
+    <!-- Polices -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Compilateur Babel pour transformer le TSX sur GitHub Pages -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             fontFamily: {
               sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-              arabic: ['"IBM Plex Sans Arabic"', 'serif'],
+              arabic: ['"Amiri"', 'serif'],
             },
             colors: {
               brand: {
                 DEFAULT: '#10B981',
                 dark: '#059669',
                 soft: 'rgba(16, 185, 129, 0.1)',
-              },
-              navy: {
-                light: '#1e293b',
-                DEFAULT: '#0f172a',
-                darker: '#020617',
               }
             }
           }
@@ -45,38 +41,44 @@
       }
     </script>
     <style>
-      body {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        -webkit-font-smoothing: antialiased;
-        overscroll-behavior-y: contain;
-        background-color: #F9FAFB;
+      body { 
+        font-family: 'Plus Jakarta Sans', sans-serif; 
+        background-color: #F9FAFB; 
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
       }
-      .arabic-text {
-        font-family: 'IBM Plex Sans Arabic', sans-serif;
-        direction: rtl;
-      }
+      .arabic-text { font-family: 'Amiri', serif !important; direction: rtl; }
+      #root { min-height: 100vh; display: flex; flex-direction: column; }
       .scrollbar-hide::-webkit-scrollbar { display: none; }
-      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-      .dark body { background-color: #0b101b; }
-      .glass { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+      
+      #fallback-loader {
+        position: fixed; inset: 0; background: #0b101b;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        z-index: 9999; transition: opacity 0.5s;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 
     <script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom": "https://esm.sh/react-dom@^19.2.3",
-    "react-dom/client": "https://esm.sh/react-dom@^19.2.3/client",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/"
-  }
-}
-</script>
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react/": "https://esm.sh/react@18.2.0/",
+        "react-dom": "https://esm.sh/react-dom@18.2.0",
+        "react-dom/": "https://esm.sh/react-dom@18.2.0/",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "@google/genai": "https://esm.sh/@google/genai@1.34.0"
+      }
+    }
+    </script>
   </head>
-  <body>
-    <div id="root"></div>
-    <!-- On charge index.tsx via Babel pour qu'il soit compilé en JS par le navigateur -->
-    <script type="text/babel" data-type="module" src="./index.tsx"></script>
+  <body class="bg-slate-50 dark:bg-[#0b101b]">
+    <div id="root">
+      <div id="fallback-loader">
+        <div style="width: 40px; height: 40px; border: 4px solid rgba(16,185,129,0.2); border-top-color: #10B981; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="color: #10B981; margin-top: 15px; font-weight: 800; letter-spacing: 2px;">MEDDEB</p>
+      </div>
+    </div>
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>

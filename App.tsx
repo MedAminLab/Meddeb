@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const [activeLocation, setActiveLocation] = useState<SavedLocation | null>(null);
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem('meddeb_theme');
-    return saved === 'dark';
+    return saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
   });
 
   useEffect(() => {
@@ -23,8 +23,6 @@ const App: React.FC = () => {
       document.documentElement.classList.remove('dark');
     }
   }, [isDark]);
-
-  const toggleTheme = () => setIsDark(!isDark);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -46,7 +44,7 @@ const App: React.FC = () => {
       activeTab={activeTab} 
       setActiveTab={setActiveTab} 
       isDark={isDark} 
-      toggleTheme={toggleTheme}
+      toggleTheme={() => setIsDark(!isDark)}
       activeLocation={activeLocation}
     >
       {renderContent()}
