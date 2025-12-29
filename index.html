@@ -1,23 +1,21 @@
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="h-full">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#10B981" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     
-    <!-- Icônes PWA -->
     <link rel="apple-touch-icon" href="https://img.icons8.com/fluency-systems-filled/512/10B981/crescent-moon.png" />
     <link rel="icon" type="image/png" href="https://img.icons8.com/fluency-systems-filled/192/10B981/crescent-moon.png" />
     <link rel="manifest" href="./manifest.json" />
     <title>Meddeb</title>
     
-    <!-- Polices -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -41,43 +39,48 @@
       }
     </script>
     <style>
+      :root { --sat: env(safe-area-inset-top); --sab: env(safe-area-inset-bottom); }
       body { 
         font-family: 'Plus Jakarta Sans', sans-serif; 
-        background-color: #F9FAFB; 
+        background-color: #0b101b; 
         margin: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
         -webkit-tap-highlight-color: transparent;
       }
       .arabic-text { font-family: 'Amiri', serif !important; direction: rtl; }
-      #root { min-height: 100vh; display: flex; flex-direction: column; }
+      #root { height: 100%; display: flex; flex-direction: column; width: 100%; }
       .scrollbar-hide::-webkit-scrollbar { display: none; }
       
       #fallback-loader {
         position: fixed; inset: 0; background: #0b101b;
         display: flex; flex-direction: column; align-items: center; justify-content: center;
-        z-index: 9999; transition: opacity 0.5s;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
       }
       @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 
     <script type="importmap">
-    {
-      "imports": {
-        "react": "https://esm.sh/react@18.2.0",
-        "react/": "https://esm.sh/react@18.2.0/",
-        "react-dom": "https://esm.sh/react-dom@18.2.0",
-        "react-dom/": "https://esm.sh/react-dom@18.2.0/",
-        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-        "@google/genai": "https://esm.sh/@google/genai@1.34.0"
-      }
-    }
-    </script>
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
+    "@google/genai": "https://esm.sh/@google/genai@1.34.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
   </head>
   <body class="bg-slate-50 dark:bg-[#0b101b]">
-    <div id="root">
-      <div id="fallback-loader">
-        <div style="width: 40px; height: 40px; border: 4px solid rgba(16,185,129,0.2); border-top-color: #10B981; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-        <p style="color: #10B981; margin-top: 15px; font-weight: 800; letter-spacing: 2px;">MEDDEB</p>
-      </div>
+    <div id="root"></div>
+    <div id="fallback-loader">
+      <div style="width: 40px; height: 40px; border: 4px solid rgba(16,185,129,0.2); border-top-color: #10B981; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+      <p style="color: #10B981; margin-top: 15px; font-weight: 800; letter-spacing: 2px; font-size: 10px; font-family: sans-serif;">CHARGEMENT</p>
     </div>
     <script type="module" src="./index.tsx"></script>
   </body>
