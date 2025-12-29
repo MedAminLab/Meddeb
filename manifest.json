@@ -2,27 +2,33 @@
 {
   "short_name": "Meddeb",
   "name": "Meddeb - Prière et Coran",
-  "description": "Horaires de prière géolocalisés, lecture du Coran et Douaas dans une interface moderne.",
+  "description": "Horaires de prière géolocalisés, lecture du Coran et Douaas.",
   "id": "./",
   "categories": ["lifestyle", "utilities", "education"],
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/1043/1043138.png",
+      "src": "https://img.icons8.com/ios-filled/192/10B981/crescent-moon.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/1043/1043138.png",
+      "src": "https://img.icons8.com/ios-filled/512/10B981/crescent-moon.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "https://img.icons8.com/ios-filled/512/10B981/crescent-moon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "start_url": "./",
   "display": "standalone",
   "display_override": ["standalone", "window-controls-overlay"],
-  "theme_color": "#10B981",
+  "theme_color": "#0b101b",
   "background_color": "#0b101b",
   "orientation": "portrait",
   "lang": "fr-FR"
