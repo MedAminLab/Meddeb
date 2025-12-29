@@ -1,6 +1,11 @@
 
 const CACHE_NAME = 'meddeb-v1';
-const urlsToCache = ['/', '/index.html'];
+// Utilisation de chemins relatifs pour fonctionner sur GitHub Pages (ex: /meddeb/)
+const urlsToCache = [
+  './',
+  'index.html',
+  'manifest.json'
+];
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -10,6 +15,9 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    caches.match(event.request).then(response => {
+      // Retourne le fichier du cache s'il existe, sinon fait une requête réseau
+      return response || fetch(event.request);
+    })
   );
 });

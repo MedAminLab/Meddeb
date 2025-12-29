@@ -3,7 +3,7 @@
   "short_name": "Meddeb",
   "name": "Meddeb - Prière et Coran",
   "description": "Horaires de prière géolocalisés, lecture du Coran et Douaas dans une interface moderne.",
-  "id": "/meddeb/",
+  "id": "./",
   "categories": ["lifestyle", "utilities", "education"],
   "icons": [
     {
@@ -19,7 +19,7 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "./",
   "display": "standalone",
   "display_override": ["standalone", "window-controls-overlay"],
   "theme_color": "#10B981",
