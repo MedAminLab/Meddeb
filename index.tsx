@@ -4,30 +4,37 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 
 const container = document.getElementById('root');
+
 if (container) {
   const root = createRoot(container);
+  
+  // On cache le loader immédiatement après le premier rendu
+  const hideLoader = () => {
+    const loader = document.getElementById('fallback-loader');
+    if (loader) {
+      loader.style.opacity = '0';
+      setTimeout(() => loader.remove(), 500);
+    }
+  };
+
   root.render(
     <React.StrictMode>
       <App />
     </React.StrictMode>
   );
-  
-  const loader = document.getElementById('fallback-loader');
-  if (loader) {
-    setTimeout(() => {
-      loader.style.opacity = '0';
-      setTimeout(() => loader.remove(), 500);
-    }, 400);
-  }
+
+  // Exécution de la suppression du loader
+  hideLoader();
 }
 
-// Enregistrement sécurisé du Service Worker
+// Enregistrement sécurisé du Service Worker pour GitHub Pages
 if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
   window.addEventListener('load', () => {
-    // On n'enregistre le SW que si l'origine correspond pour éviter les erreurs de preview
     if (!window.location.host.includes('usercontent.goog')) {
-      navigator.serviceWorker.register('./sw.js').catch(err => {
-        console.warn('ServiceWorker non enregistré (environnement de dev)');
+      // Sur GitHub Pages, le chemin doit souvent être relatif au dossier du dépôt
+      const swPath = window.location.pathname.includes('/Meddeb/') ? './sw.js' : '/sw.js';
+      navigator.serviceWorker.register(swPath).catch(err => {
+        console.warn('ServiceWorker non enregistré:', err);
       });
     }
   });
