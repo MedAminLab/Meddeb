@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meddeb - Coran & Prières</title>
+    <meta name="description"
+        content="Horaires de prière précis et lecture du Coran dans une interface moderne et apaisante.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="fa-solid fa-moon"></i>
+                <span>Meddeb</span>
+            </div>
+            <div class="header-actions">
+                <button id="language-toggle" class="language-toggle" title="Changer la langue">
+                    <i class="fa-solid fa-language"></i>
+                    <span id="current-lang">FR</span>
+                </button>
+                <div class="location-badge" id="location-badge">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span id="location-text">Détection...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main id="main-content">
+            <!-- Prayer Times Section (Active by default) -->
+            <section id="prayer-section" class="active-section">
+                <div class="hero-card">
+                    <div class="next-prayer-info">
+                        <span class="label">Prochaine Prière</span>
+                        <h2 id="next-prayer-name">--:--</h2>
+                        <div class="countdown" id="countdown">00:00:00</div>
+                    </div>
+                    <!-- Last Read Container -->
+                    <div id="last-read-container" class="hidden">
+                        <button id="continue-read-btn" class="continue-btn">
+                            <i class="fa-solid fa-book-open"></i> Reprendre <span id="last-read-surah"></span>
+                        </button>
+                    </div>
+                    <div class="current-date" id="current-date">-- -- ----</div>
+                </div>
+
+                <div class="prayer-list" id="prayer-list">
+                    <!-- Prayer items will be injected here by JS -->
+                    <div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> Chargement...</div>
+                </div>
+            </section>
+
+            <!-- Quran Section -->
+            <section id="quran-section" class="hidden-section">
+                <div class="search-bar">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="surah-search" placeholder="Rechercher une sourate...">
+                </div>
+                <div class="surah-list" id="surah-list">
+                    <!-- Surah items will be injected here by JS -->
+                </div>
+                <div id="quran-reader" class="hidden">
+                    <div class="reader-controls">
+                        <button id="back-to-surahs" class="back-btn"><i class="fa-solid fa-arrow-left"></i>
+                            Retour</button>
+                        <div class="mode-selector">
+                            <button id="mode-translation" class="mode-btn active">Traduction</button>
+                            <button id="mode-mushaf" class="mode-btn">Mushaf</button>
+                        </div>
+                    </div>
+                    <div class="surah-header">
+                        <h2 id="reader-surah-name"></h2>
+                        <p id="reader-surah-info"></p>
+                    </div>
+                    <div id="ayahs-container" class="ayahs-container">
+                        <!-- Ayahs will be injected here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Audio Section -->
+            <section id="audio-section" class="hidden-section">
+                <div class="section-header">
+                    <h2>Coran Audio</h2>
+                    <p>Écoutez le Saint Coran par vos récitateurs préférés</p>
+
+                    <div class="reciter-selector-container">
+                        <label for="reciter-select">Récitateur :</label>
+                        <select id="reciter-select" class="reciter-select">
+                            <option value="ar.alafasy">Mishary Rashid Alafasy</option>
+                            <option value="ar.abdulbasitmurattal">Abdul Basit (Murattal)</option>
+                            <option value="ar.abdurrahmaansudais">Abdurrahmaan As-Sudais</option>
+                            <option value="ar.husary">Mahmoud Khalil Al-Husary</option>
+                            <option value="ar.saoodshuraym">Sa'ud ash-Shuraym</option>
+                            <option value="ar.mahermuaiqly">Maher Al Muaiqly</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="audio-player-container" class="audio-player-container hidden">
+                    <div class="audio-info">
+                        <span id="audio-surah-name">Lecture en cours</span>
+                        <button id="close-audio-btn"><i class="fa-solid fa-times"></i></button>
+                    </div>
+                    <audio id="main-audio-player" controls style="width: 100%; margin-top: 0.5rem;"></audio>
+                </div>
+
+                <div class="surah-list" id="audio-surah-list">
+                    <!-- Audio Surah items will be injected here -->
+                </div>
+            </section>
+
+            <!-- Duaa Section -->
+            <section id="duaa-section" class="hidden-section">
+                <div class="section-header">
+                    <h2 data-translate="duaa_title">Invocations</h2>
+                    <p data-translate="duaa_subtitle">Invocations authentiques du Coran et de la Sunnah</p>
+                </div>
+
+                <div class="search-bar">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="duaa-search" data-translate-placeholder="duaa_search_placeholder"
+                        placeholder="Rechercher une invocation...">
+                </div>
+
+                <div id="duaa-categories" class="duaa-categories">
+                    <!-- Categories will be injected here -->
+                </div>
+
+                <div id="duaa-list" class="duaa-list">
+                    <!-- Duaa items will be injected here -->
+                </div>
+
+                <!-- Duaa Detail Modal -->
+                <div id="duaa-modal" class="duaa-modal hidden">
+                    <div class="duaa-modal-content">
+                        <button id="close-duaa-modal" class="close-modal-btn">
+                            <i class="fa-solid fa-times"></i>
+                        </button>
+                        <h3 id="duaa-modal-title"></h3>
+                        <div id="duaa-modal-arabic" class="duaa-arabic"></div>
+                        <div id="duaa-modal-translation" class="duaa-translation"></div>
+                        <div id="duaa-modal-reference" class="duaa-reference"></div>
+                        <div class="duaa-actions">
+                            <button id="copy-duaa-btn" class="action-btn">
+                                <i class="fa-solid fa-copy"></i>
+                                <span data-translate="copy">Copier</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings-section" class="hidden-section">
+                <div class="section-header">
+                    <h2 data-translate="settings_title">Réglages</h2>
+                    <p data-translate="settings_subtitle">Personnalisez votre expérience</p>
+                </div>
+
+                <!-- Language Settings -->
+                <div class="settings-card">
+                    <h3 data-translate="language_settings">Langue</h3>
+                    <div class="input-group">
+                        <label data-translate="choose_language">Choisir la langue</label>
+                        <div class="toggle-container">
+                            <button id="lang-fr-btn" class="toggle-btn active">Français</button>
+                            <button id="lang-ar-btn" class="toggle-btn">العربية</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location Settings -->
+                <div class="settings-card">
+                    <h3 data-translate="location_settings">Localisations pour la prière</h3>
+                    <p class="settings-description" data-translate="location_description">Ajoutez plusieurs villes et
+                        basculez entre elles</p>
+
+                    <div id="locations-list" class="locations-list">
+                        <!-- Saved locations will be displayed here -->
+                    </div>
+
+                    <div class="input-group">
+                        <label for="city-input" data-translate="city_label">Ville</label>
+                        <input type="text" id="city-input" data-translate-placeholder="city_placeholder"
+                            placeholder="Ex: Paris">
+                    </div>
+                    <div class="input-group">
+                        <label for="country-input" data-translate="country_label">Pays</label>
+                        <input type="text" id="country-input" data-translate-placeholder="country_placeholder"
+                            placeholder="Ex: France">
+                    </div>
+                    <button id="add-loc-btn" class="primary-btn">
+                        <i class="fa-solid fa-plus"></i>
+                        <span data-translate="add_location">Ajouter une localisation</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-target="prayer-section">
+                <i class="fa-solid fa-clock"></i>
+                <span data-translate="nav_prayer">Prières</span>
+            </button>
+            <button class="nav-item" data-target="quran-section">
+                <i class="fa-solid fa-book-quran"></i>
+                <span data-translate="nav_quran">Coran</span>
+            </button>
+            <button class="nav-item" data-target="audio-section">
+                <i class="fa-solid fa-headphones"></i>
+                <span data-translate="nav_audio">Audio</span>
+            </button>
+            <button class="nav-item" data-target="duaa-section">
+                <i class="fa-solid fa-hands-praying"></i>
+                <span data-translate="nav_duaa">Duaa</span>
+            </button>
+            <button class="nav-item" data-target="settings-section">
+                <i class="fa-solid fa-gear"></i>
+                <span data-translate="nav_settings">Réglages</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
