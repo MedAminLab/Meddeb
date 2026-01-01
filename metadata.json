@@ -1,7 +1,0 @@
-{
-  "name": "Meddeb - Prières & Coran",
-  "description": "Une application islamique moderne pour les horaires de prière multi-localisations et la lecture du Coran avec plusieurs récitants.",
-  "requestFramePermissions": [
-    "geolocation"
-  ]
-}
